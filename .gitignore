@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+
+astroai.db
+
+.idea/
+.vscode/
+
+build/
+dist/
+
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
