@@ -1,3 +1,4 @@
+import swisseph as swe
 SIGNS = [
     "Aries",
     "Taurus",
@@ -19,7 +20,8 @@ PLANETS = {
     "Venus": 3,
     "Mars": 4,
     "Jupiter": 5,
-    "Saturn": 6
+    "Saturn": 6,
+    "Rahu" : swe.TRUE_NODE
 }
 NAKSHATRAS = [
     "Ashwini",

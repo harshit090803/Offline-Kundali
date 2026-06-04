@@ -1,91 +1,48 @@
 import swisseph as swe
 from datetime import datetime
-from app.services.constants import PLANETS  
-from app.services.constants import NAKSHATRAS
-def get_sun_position(
-    birth_date : str,
-    birth_time : str
-):
-    dt = datetime.strptime(
-        f"{birth_date} {birth_time}",
-        "%Y-%m-%d %H:%M"
-    )
-    jd = swe.julday(
-        dt.year,
-        dt.month,
-        dt.day,
-        dt.hour + dt.minute / 60.0
-    )
-    sun_data = swe.calc_ut(
-        jd,
-        swe.SUN
-    )
-    longitude = sun_data[0][0]
-    return {
-        "planet" : "Sun",
-        "longitude" : longitude,
-        "sign" : get_zodiac_sign(longitude)
-    }
+from app.services.constants import (PLANETS, SIGNS, NAKSHATRAS)
 def get_zodiac_sign(longitude):
-    signs = [
-        "Aries",
-        "Taurus",
-        "Gemini",
-        "Cancer",
-        "Leo",
-        "Virgo",
-        "Libra",
-        "Scorpio",
-        "Sagittarius",
-        "Capricorn",
-        "Aquarius",
-        "Pisces"
-    ]
     sign_index = int(longitude // 30)
-    return signs[sign_index]
-def get_all_planets(
-    birth_date: str,
-    birth_time: str
-):
-
-    dt = datetime.strptime(
-        f"{birth_date} {birth_time}",
-        "%Y-%m-%d %H:%M"
-    )
-
-    jd = swe.julday(
-        dt.year,
-        dt.month,
-        dt.day,
-        dt.hour + dt.minute / 60
-    )
-
-    result = {}
-
-    for planet_name, planet_id in PLANETS.items():
-
-        data = swe.calc_ut(
-            jd,
-            planet_id
-        )
-
-        longitude = data[0][0]
-
-        result[planet_name] = {
-            "longitude": round(longitude, 2),
-            "sign": get_zodiac_sign(longitude),
-            "nakshatra" : get_nakshatra(longitude),
-            "pada" : get_pada(longitude)
-        }
-
-    return result
+    return SIGNS[sign_index]
 def get_nakshatra(longitude):
     nak_length = 360 / 27
     index = int(longitude // nak_length)
     return NAKSHATRAS[index]
+
+
 def get_pada(longitude):
     nak_length = 360 / 27
     pada_length = nak_length / 4
     remainder = longitude % nak_length
     pada = int(remainder // pada_length) + 1
     return pada
+
+
+def get_all_planets(birth_date: str, birth_time: str):
+
+    dt = datetime.strptime(f"{birth_date} {birth_time}", "%Y-%m-%d %H:%M")
+
+    jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
+    result = {}
+    for planet_name, planet_id in PLANETS.items():
+        data = swe.calc_ut(jd, planet_id)
+        longitude = data[0][0]
+        speed = data[0][3]
+        retrograde = speed < 0
+        result[planet_name] = {
+            "longitude": round(longitude, 2),
+            "sign": get_zodiac_sign(longitude),
+            "nakshatra": get_nakshatra(longitude),
+            "pada": get_pada(longitude),
+            "retrograde": retrograde
+            }
+
+    # Generate Ketu from Rahu
+
+    rahu_longitude = result["Rahu"]["longitude"]
+
+    ketu_longitude = (rahu_longitude + 180) % 360
+
+    result["Ketu"] = {"longitude": round(ketu_longitude, 2), "sign": get_zodiac_sign(ketu_longitude), "nakshatra": get_nakshatra(ketu_longitude), "pada": get_pada(ketu_longitude), "retrograde": True}
+
+    return result
