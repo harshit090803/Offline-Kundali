@@ -8,9 +8,5 @@ def get_cities():
     cities = db.query(City).all()
     result = []
     for city in cities:
-        result.append({
-            "city" : city.city,
-            "state" : city.state,
-            "country" : city.country
-        })
+        result.append({"city" : city.city, "state" : city.state, "country" : city.country})
     return result

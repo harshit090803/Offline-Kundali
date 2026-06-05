@@ -17,13 +17,7 @@ def generate_chart(request : ChartRequest):
     for planet_name in planets:
         longitude = planets[planet_name]["longitude"]
         planets[planet_name]["house"] = find_house(longitude,houses)
-    return {
-        "city" : city.city,
-        "state" : city.state,
-        "country" : city.country,
-        "ascendant" : ascendant,
-        "planets" : planets
-    }
+    return {"city" : city.city, "state" : city.state, "country" : city.country, "ascendant" : ascendant, "planets" : planets}
 @router.get("/chart/planets")
 def planets():
     result = get_all_planets(birth_date="2003-08-10", birth_time="14:30")
@@ -47,7 +41,4 @@ def current_mahadasha():
     planets = get_all_planets("2003-08-10", "14:30")
     moon_longitude = planets["Moon"]["longitude"]
     balance = get_dasha_balance(moon_longitude)
-    return get_current_mahadasha(
-        "2003-08-10",
-        balance["mahadasha"],
-        balance["balance_years"])
+    return get_current_mahadasha("2003-08-10", balance["mahadasha"], balance["balance_years"])
