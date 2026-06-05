@@ -35,3 +35,20 @@ def get_current_mahadasha(birth_date, birth_mahadasha, balance_years):
         if (current_start <= today <= current_end):
             return {"mahadasha": md, "start": current_start.date(), "end": current_end.date()}
         current_start = current_end
+def get_antardasha_periods(mahadasha):
+    md_years = DASHA_YEARS[mahadasha]
+    periods = []
+    for ad in DASHA_SEQUENCE:
+        ad_years = (md_years  * DASHA_YEARS[ad]) / 120
+        periods.append({"antardasha" : ad, "years" : round(ad_years, 2)})
+    return periods
+def get_current_antardasha(mahadasha, md_start_date):
+    periods = get_antardasha_periods(mahadasha)
+    current_start = md_start_date
+    today = datetime.now()
+    for period in periods:
+        current_end = (current_start + timedelta(days = period["years"] * 365.25))
+        if(current_start <= today <= current_end):
+            return{"mahadasha" : mahadasha, "antardasha" : period["antardasha"], "start" : current_start.date(), "end" : current_end.date()}
+        current_start = (current_end)
+    return None

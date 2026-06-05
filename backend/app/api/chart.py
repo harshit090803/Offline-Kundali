@@ -6,7 +6,8 @@ from app.schemas.chart_schema import ChartRequest
 from app.services.city_service import get_city
 from app.services.chart_service import find_house
 from app.services.dasha_service import (get_birth_dasha)
-from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha)
+from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha, get_antardasha_periods, get_current_antardasha)
+from datetime import datetime
 router = APIRouter()
 @router.post("/chart/generate")
 def generate_chart(request : ChartRequest):
@@ -42,3 +43,11 @@ def current_mahadasha():
     moon_longitude = planets["Moon"]["longitude"]
     balance = get_dasha_balance(moon_longitude)
     return get_current_mahadasha("2003-08-10", balance["mahadasha"], balance["balance_years"])
+@router.get("/chart/antardasha-test")
+def antardasha_test():
+    return get_antardasha_periods("Rahu")
+@router.get("/chart/current-antardasha")
+def current_antardasha():
+    md = get_current_mahadasha("2003-08-10", "Mars", 3.87)
+    start_date = datetime.combine(md["start"], datetime.min.time())
+    return get_current_antardasha(md["mahadasha"], start_date)
