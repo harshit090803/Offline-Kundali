@@ -1,3 +1,4 @@
+from re import A
 from app.services.constants import (NAKSHATRAS, NAKSHATRA_LORDS)
 from app.services.constants import (DASHA_YEARS, NAKSHATRA_LORDS)
 from datetime import datetime, timedelta
@@ -52,3 +53,12 @@ def get_current_antardasha(mahadasha, md_start_date):
             return{"mahadasha" : mahadasha, "antardasha" : period["antardasha"], "start" : current_start.date(), "end" : current_end.date()}
         current_start = (current_end)
     return None
+def get_birth_mahadasha_data(moon_longitude):
+    balance = get_dasha_balance(moon_longitude)
+    return{"birth_mahadasha" : balance["mahadasha"], "birth_balance" : balance["balance_years"]}
+def get_complete_dasha(birth_date, moon_longitude):
+    birth_data = (get_birth_mahadasha_data(moon_longitude))
+    current_md = (get_current_mahadasha(birth_date, birth_data["birth_mahadasha"], birth_data["birth_balance"]))
+    md_start = datetime.combine(current_md["start"], datetime.min.time())
+    current_ad = (get_current_antardasha(current_md["mahadasha"], md_start))
+    return {"birth_mahadasha" : birth_data["birth_mahadasha"], "birth_balance" : birth_data["birth_balance"], "current_mahadasha" : current_md["mahadasha"], "current_antardasha" : current_ad["antardasha"], "md_start" : current_md["start"], "md_end" : current_md["end"], "ad_start" : current_ad["start"], "ad_end" : current_ad["end"]}
