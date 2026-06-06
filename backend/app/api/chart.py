@@ -8,6 +8,9 @@ from app.services.chart_service import find_house
 from app.services.dasha_service import (get_birth_dasha)
 from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha, get_antardasha_periods, get_current_antardasha, get_complete_dasha, get_pratyantar_periods)
 from datetime import datetime
+from app.services.time_service import (local_to_utc)
+from app.services.aspect_service import get_aspects
+from app.services.divisional_service import (get_d2_chart, get_d3_chart)
 router = APIRouter()
 @router.post("/chart/generate")
 def generate_chart(request : ChartRequest):
@@ -15,10 +18,11 @@ def generate_chart(request : ChartRequest):
     ascendant = get_ascendant(request.birth_date, request.birth_time, float(city.latitude), float(city.longitude))
     houses = get_houses(request.birth_date, request.birth_time, float(city.latitude), float(city.longitude))    
     planets = get_all_planets(request.birth_date, request.birth_time)
+    aspects = get_aspects(planets)
     for planet_name in planets:
         longitude = planets[planet_name]["longitude"]
         planets[planet_name]["house"] = find_house(longitude,houses)
-    return {"city" : city.city, "state" : city.state, "country" : city.country, "ascendant" : ascendant, "planets" : planets}
+    return {"city" : city.city, "state" : city.state, "country" : city.country, "ascendant" : ascendant, "planets" : planets, "aspects" : aspects}
 @router.get("/chart/planets")
 def planets():
     result = get_all_planets(birth_date="2003-08-10", birth_time="14:30")
@@ -59,3 +63,14 @@ def dasha(request: ChartRequest):
 @router.get("/chart/pratyantar-test")
 def pratyantar_test():
     return get_pratyantar_periods("Jupiter", "Venus")
+@router.get("/chart/time-test")
+def time_test():
+    return str(local_to_utc("2003-08-10", "14:30", "Asia/Kolkata"))
+@router.get("/chart/d2-test")
+def d2_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d2_chart(planets)
+@router.get("/chart/d3-test")
+def d3_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d3_chart(planets)

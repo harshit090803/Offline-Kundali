@@ -49,8 +49,18 @@ def get_d3_chart(planets):
         longitude = data["longitude"]
         result[planet_name] = {"d3_sign" : get_d3_sign(longitude)}
     return result
+def get_d9_sign(longitude):
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    navamsha_number = int(degree_in_sign // (30 / 9))
+    destination_sign = (sign_index * 9 + navamsha_number) % 12
+    return SIGNS[destination_sign]
 def get_d9_chart(planets):
-    pass
+    result = {}
+    for planet_name, data in planets.items():
+        longitude = data["longitude"]
+        result[planet_name] = {"d9_sign" : get_d9_sign(longitude)}
+    return result
 def get_d10_chart(planets):
     pass
 def get_d12_chart(planets):
