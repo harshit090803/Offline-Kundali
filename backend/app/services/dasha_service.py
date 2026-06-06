@@ -62,3 +62,48 @@ def get_complete_dasha(birth_date, moon_longitude):
     md_start = datetime.combine(current_md["start"], datetime.min.time())
     current_ad = (get_current_antardasha(current_md["mahadasha"], md_start))
     return {"birth_mahadasha" : birth_data["birth_mahadasha"], "birth_balance" : birth_data["birth_balance"], "current_mahadasha" : current_md["mahadasha"], "current_antardasha" : current_ad["antardasha"], "md_start" : current_md["start"], "md_end" : current_md["end"], "ad_start" : current_ad["start"], "ad_end" : current_ad["end"]}
+def get_pratyantar_periods(mahadasha, antardasha):
+    md_years = DASHA_YEARS[mahadasha]
+    ad_years = (md_years * DASHA_YEARS[antardasha]) / 120
+    periods = []
+    for pd in DASHA_SEQUENCE:
+        pd_years = (ad_years * DASHA_YEARS[pd]) / 120
+        periods.append({"pratyantar" : pd, "years" : round(pd_years, 4)})
+    return periods
+def get_current_pratyantar(mahadasha, antardasha, ad_start_date):
+    periods = get_pratyantar_periods(mahadasha, antardasha)
+    current_start = (ad_start_date)
+    today = datetime.now()
+    for period in periods:
+        current_end = (current_start + timedelta(days= period["years"] * 365.25))
+        if (current_start <= today <= current_end):
+            return {"pratyantar": period["pratyantar"], "start": current_start.date(), "end": current_end.date()}
+        current_start = (current_end)
+    return None
+def get_complete_dasha(birth_date, moon_longitude):
+    birth_data = (get_birth_mahadasha_data(moon_longitude))
+    current_md = (get_current_mahadasha(birth_date, birth_data["birth_mahadasha"], birth_data["birth_balance"]))
+    md_start = datetime.combine(current_md["start"], datetime.min.time())
+    current_ad = (get_current_antardasha(current_md["mahadasha"], md_start))
+    ad_start = datetime.combine(current_ad["start"], datetime.min.time())
+    current_pd = (get_current_pratyantar(current_md["mahadasha"], current_ad["antardasha"], ad_start))
+    return {"birth_mahadasha": birth_data["birth_mahadasha"], "birth_balance": birth_data["birth_balance"], "current_mahadasha": current_md["mahadasha"], "current_antardasha" : current_ad["antardasha"], "current_pratyantar": current_pd["pratyantar"], "md_start": current_md["start"], "md_end": current_md["end"], "ad_start": current_ad["start"], "ad_end": current_ad["end"], "pd_start": current_pd["start"],  "pd_end": current_pd["end"]}
+def get_sookshma_periods(mahadasha, antardasha, pratyantar):
+    md_years = DASHA_YEARS[mahadasha]
+    ad_years = (md_years * DASHA_YEARS[antardasha]) / 120
+    pd_years = (ad_years * DASHA_YEARS[pratyantar]) / 120
+    periods = []
+    for sd in DASHA_SEQUENCE:
+        sd_years = (pd_years * DASHA_YEARS[sd]) / 120
+        periods.append({"sookshma": sd, "years": round(sd_years, 6)})
+    return periods
+def get_current_sookshma(mahadasha, antardasha, pratyantar, pd_start_date):
+    periods = get_sookshma_periods(mahadasha, antardasha, pratyantar)
+    current_start = (pd_start_date)
+    today = datetime.now()
+    for period in periods:
+        current_end = (current_start + timedelta(days= period["years"] * 365.25))
+        if (current_start <= today <= current_end):
+            return {"sookshma": period["sookshma"], "start": current_start.date(), "end": current_end.date()}
+            current_start = (current_end)
+        return None  
