@@ -26,11 +26,11 @@ def get_all_planets(birth_date: str, birth_time: str):
         speed = data[0][3]
         retrograde = speed < 0
         sign = get_zodiac_sign(longitude)
-        result[planet_name] = {"longitude": round(longitude, 2), "sign": sign, "dignity": get_dignity(planet_name, sign), "nakshatra": get_nakshatra(longitude), "pada": get_pada(longitude), "retrograde": retrograde}
+        result[planet_name] = {"longitude": round(longitude, 2), "sign": sign, "dignity": get_dignity(planet_name, sign, longitude), "nakshatra": get_nakshatra(longitude), "pada": get_pada(longitude), "retrograde": retrograde}
     sun_longitude = result["Sun"]["longitude"]
     rahu_longitude = result["Rahu"]["longitude"]
     ketu_longitude = (rahu_longitude + 180) % 360
-    result["Ketu"] = {"longitude": round(ketu_longitude, 2), "sign": get_zodiac_sign(ketu_longitude), "dignity": get_dignity("Ketu", get_zodiac_sign(ketu_longitude)), "nakshatra": get_nakshatra(ketu_longitude), "pada": get_pada(ketu_longitude), "retrograde": True}
+    result["Ketu"] = {"longitude": round(ketu_longitude, 2), "sign": get_zodiac_sign(ketu_longitude), "dignity": get_dignity("Ketu", get_zodiac_sign(ketu_longitude), ketu_longitude), "nakshatra": get_nakshatra(ketu_longitude), "pada": get_pada(ketu_longitude), "retrograde": True}
     for planet_name in result:
         result[planet_name]["combust"] = is_combust(planet_name, result[planet_name]["longitude"], sun_longitude)
     return result
