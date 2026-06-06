@@ -35,4 +35,9 @@ def get_aspects(planets):
                     aspects.append({"from": p1, "to": p2, "type": "3rd Aspect"})
                 if has_aspect(lon1, lon2, 270):
                     aspects.append({"from": p1, "to": p2, "type": "10th Aspect"})
+            if p1 == "Rahu" or p1 == "Ketu":
+                if has_aspect(lon1, lon2, 120):
+                    aspects.append({"from": p1, "to": p2, "type": "5th Aspect"})
+                if has_aspect(lon1, lon2, 240):
+                    aspects.append({"from": p1, "to": p2, "type": "9th Aspect"})
     return aspects
