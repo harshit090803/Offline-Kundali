@@ -1,6 +1,7 @@
 import swisseph as swe
 from datetime import datetime
 from app.services.constants import (PLANETS, SIGNS, NAKSHATRAS)
+from app.services.time_service import (local_to_utc)
 def get_zodiac_sign(longitude):
     sign_index = int(longitude // 30)
     return SIGNS[sign_index]
@@ -15,8 +16,8 @@ def get_pada(longitude):
     pada = int(remainder // pada_length) + 1
     return pada
 def get_all_planets(birth_date: str, birth_time: str):
-    dt = datetime.strptime(f"{birth_date} {birth_time}", "%Y-%m-%d %H:%M")
-    jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
+    utc_dt = local_to_utc(birth_date, birth_time, "Asia/Kolkata")
+    jd = swe.julday(utc_dt.year, utc_dt.month, utc_dt.day, utc_dt.hour + utc_dt.minute / 60.0)
     result = {}
     for planet_name, planet_id in PLANETS.items():
         data = swe.calc_ut(jd, planet_id)

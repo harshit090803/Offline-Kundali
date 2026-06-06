@@ -87,7 +87,9 @@ def get_complete_dasha(birth_date, moon_longitude):
     current_ad = (get_current_antardasha(current_md["mahadasha"], md_start))
     ad_start = datetime.combine(current_ad["start"], datetime.min.time())
     current_pd = (get_current_pratyantar(current_md["mahadasha"], current_ad["antardasha"], ad_start))
-    return {"birth_mahadasha": birth_data["birth_mahadasha"], "birth_balance": birth_data["birth_balance"], "current_mahadasha": current_md["mahadasha"], "current_antardasha" : current_ad["antardasha"], "current_pratyantar": current_pd["pratyantar"], "md_start": current_md["start"], "md_end": current_md["end"], "ad_start": current_ad["start"], "ad_end": current_ad["end"], "pd_start": current_pd["start"],  "pd_end": current_pd["end"]}
+    pd_start = datetime.combine(current_pd["start"], datetime.min.time())
+    current_sd = (get_current_sookshma(current_md["mahadasha"], current_ad["antardasha"], current_pd["pratyantar"], pd_start))
+    return {"birth_mahadasha": birth_data["birth_mahadasha"], "birth_balance": birth_data["birth_balance"], "current_mahadasha": current_md["mahadasha"], "current_antardasha" : current_ad["antardasha"], "current_pratyantar": current_pd["pratyantar"], "md_start": current_md["start"], "md_end": current_md["end"], "ad_start": current_ad["start"], "ad_end": current_ad["end"], "pd_start": current_pd["start"],  "pd_end": current_pd["end"], "sd_start": current_sd["start"], "sd_end": current_sd["end"]}
 def get_sookshma_periods(mahadasha, antardasha, pratyantar):
     md_years = DASHA_YEARS[mahadasha]
     ad_years = (md_years * DASHA_YEARS[antardasha]) / 120
@@ -99,11 +101,11 @@ def get_sookshma_periods(mahadasha, antardasha, pratyantar):
     return periods
 def get_current_sookshma(mahadasha, antardasha, pratyantar, pd_start_date):
     periods = get_sookshma_periods(mahadasha, antardasha, pratyantar)
-    current_start = (pd_start_date)
+    current_start = pd_start_date
     today = datetime.now()
     for period in periods:
-        current_end = (current_start + timedelta(days= period["years"] * 365.25))
-        if (current_start <= today <= current_end):
+        current_end = (current_start + timedelta(days=period["years"] * 365.25))
+        if current_start <= today <= current_end:
             return {"sookshma": period["sookshma"], "start": current_start.date(), "end": current_end.date()}
-            current_start = (current_end)
-        return None  
+        current_start = current_end
+    return None
