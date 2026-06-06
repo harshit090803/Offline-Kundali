@@ -10,7 +10,7 @@ from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha
 from datetime import datetime
 from app.services.time_service import (local_to_utc)
 from app.services.aspect_service import get_aspects
-from app.services.divisional_service import (get_d2_chart, get_d3_chart)
+from app.services.divisional_service import (get_d2_chart, get_d3_chart, get_d9_chart)
 router = APIRouter()
 @router.post("/chart/generate")
 def generate_chart(request : ChartRequest):
