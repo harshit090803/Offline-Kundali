@@ -19,9 +19,10 @@ def get_pada(longitude):
 def get_all_planets(birth_date: str, birth_time: str):
     utc_dt = local_to_utc(birth_date, birth_time, "Asia/Kolkata")
     jd = swe.julday(utc_dt.year, utc_dt.month, utc_dt.day, utc_dt.hour + utc_dt.minute / 60.0)
+    swe.set_sid_mode(swe.SIDM_LAHIRI)
     result = {}
     for planet_name, planet_id in PLANETS.items():
-        data = swe.calc_ut(jd, planet_id)
+        data = swe.calc_ut(jd, planet_id, swe.FLG_SIDEREAL)
         longitude = data[0][0]
         speed = data[0][3]
         retrograde = speed < 0

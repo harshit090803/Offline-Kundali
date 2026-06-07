@@ -33,6 +33,24 @@ SIGNS = [
     "Aquarius",
     "Pisces"
 ]
+MOVABLE_SIGNS = [
+    "Aries",
+    "Cancer",
+    "Libra",
+    "Capricorn"
+]
+FIXED_SIGNS = [
+    "Taurus",
+    "Leo",
+    "Scorpio",
+    "Aquarius"
+]
+DUAL_SIGNS = [
+    "Gemini",
+    "Virgo",
+    "Sagittarius",
+    "Pisces"
+]
 def get_d3_sign(longitude):
     sign_index = int(longitude // 30)
     degree_in_sign = longitude % 30
@@ -51,9 +69,16 @@ def get_d3_chart(planets):
     return result
 def get_d9_sign(longitude):
     sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
     degree_in_sign = longitude % 30
     navamsha_number = int(degree_in_sign // (30 / 9))
-    destination_sign = (sign_index * 9 + navamsha_number) % 12
+    if sign in MOVABLE_SIGNS:
+        start_index = sign_index
+    elif sign in FIXED_SIGNS:    
+        start_index = (sign_index + 8) % 12
+    else:
+        start_index = (sign_index + 4) % 12   
+    destination_sign = (start_index + navamsha_number) % 12
     return SIGNS[destination_sign]
 def get_d9_chart(planets):
     result = {}

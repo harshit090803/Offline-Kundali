@@ -74,3 +74,7 @@ def d2_test():
 def d3_test():
     planets = get_all_planets("2003-08-10", "14:30")
     return get_d3_chart(planets)
+@router.get("/chart/d9-test")
+def d9_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d9_chart(planets)
