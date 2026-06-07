@@ -51,6 +51,14 @@ DUAL_SIGNS = [
     "Sagittarius",
     "Pisces"
 ]
+ODD_SIGNS = [
+    "Aries",
+    "Gemini",
+    "Leo",
+    "Libra",
+    "Sagittarius",
+    "Aquarius"
+]
 def get_d3_sign(longitude):
     sign_index = int(longitude // 30)
     degree_in_sign = longitude % 30
@@ -66,6 +74,35 @@ def get_d3_chart(planets):
     for planet_name, data in planets.items():
         longitude = data["longitude"]
         result[planet_name] = {"d3_sign" : get_d3_sign(longitude)}
+    return result
+def get_d4_sign(longitude):
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    chaturthamsha_number = int(degree_in_sign // 7.5)
+    destination_index = (sign_index + (chaturthamsha_number * 3)) % 12
+    return SIGNS[destination_index]
+def get_d4_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d4_sign" : get_d4_sign(longitude)}
+    return result
+def get_d7_sign(longitude):
+    sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
+    degree_in_sign = longitude % 30
+    saptamsha_number = int(degree_in_sign // (30 / 7))
+    if sign_index % 2 == 0:
+        start_index = sign_index
+    else:
+        start_index = (sign_index + 6) % 12
+    destination_index = (start_index + saptamsha_number) % 12
+    return SIGNS[destination_index]
+def get_d7_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d7_sign" : get_d7_sign(longitude)}
     return result
 def get_d9_sign(longitude):
     sign_index = int(longitude // 30)
@@ -86,15 +123,126 @@ def get_d9_chart(planets):
         longitude = data["longitude"]
         result[planet_name] = {"d9_sign" : get_d9_sign(longitude)}
     return result
+def get_d10_sign(longitude):
+    sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
+    degree_in_sign = longitude % 30
+    dashamsha_number = int(degree_in_sign // 3)
+    if sign in ODD_SIGNS:
+        start_index = sign_index
+    else:
+        start_index = (sign_index + 8) % 12
+    destination_index = (start_index + dashamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d10_chart(planets):
-    pass
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d10_sign" : get_d10_sign(longitude)}
+    return result
+def get_d12_sign(longitude):
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    dwadashamsha_number = int(degree_in_sign // 2.5)
+    destination_index = (sign_index + dwadashamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d12_chart(planets):
-    pass
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d12_sign" : get_d12_sign(longitude)}
+    return result
+def get_d16_sign(longitude):
+    sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
+    degree_in_sign = longitude % 30
+    shodashamsha_number = int(degree_in_sign // (30 / 16))
+    if sign in MOVABLE_SIGNS:
+        start_index = 0
+    elif sign in FIXED_SIGNS:
+        start_index = 4
+    else:
+        start_index = 8
+    destination_index = (start_index + shodashamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d16_chart(planets):
-    pass
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d16_sign" : get_d16_sign(longitude)}
+    return result
+def get_d20_sign(longitude):
+    sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
+    degree_in_sign = longitude % 30
+    vimsamsa_number = int(degree_in_sign // (30 / 20))
+    if sign in MOVABLE_SIGNS:
+        start_index = 0
+    elif sign in FIXED_SIGNS:
+        start_index = 8
+    else:
+        start_index = 4
+    destination_index = (start_index + vimsamsa_number) % 12
+    return SIGNS[destination_index]
+def get_d20_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d20_sign" : get_d20_sign(longitude)}
+    return result
+def get_d24_sign(longitude):
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    siddhamsa_number = int(degree_in_sign // (30 / 24))
+    if sign_index % 2 == 0:
+        start_index = 4
+    else:
+        start_index = 3
+    destination_index = (start_index + siddhamsa_number) % 12
+    return SIGNS[destination_index]
 def get_d24_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d24_sign" : get_d24_sign(longitude)}
+    return result
+def get_d27_sign(longitude):
     pass
 def get_d27_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d27_sign" : get_d27_sign(longitude)}
+    return result
+def get_d30_sign(longitude):
     pass
 def get_d30_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d30_sign" : get_d30_sign(longitude)}
+    return result
+def get_d40_sign(longitude):
     pass
+def get_d40_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d40_sign" : get_d40_sign(longitude)}
+    return result
+def get_d45_sign(longitude):
+    pass
+def get_d45_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d45_sign" : get_d45_sign(longitude)}
+    return result
+def get_d60_sign(longitude):
+    pass
+def get_d60_chart(planets):
+    result = {}
+    for planet_name in planets:
+        longitude = planets[planet_name]["longitude"]
+        result[planet_name] = {"d60_sign" : get_d60_sign(longitude)}
+    return result

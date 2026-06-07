@@ -10,7 +10,7 @@ from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha
 from datetime import datetime
 from app.services.time_service import (local_to_utc)
 from app.services.aspect_service import get_aspects
-from app.services.divisional_service import (get_d2_chart, get_d3_chart, get_d9_chart)
+from app.services.divisional_service import (get_d2_chart, get_d3_chart, get_d4_chart, get_d7_chart, get_d9_chart, get_d10_chart, get_d12_chart, get_d16_chart, get_d20_chart, get_d24_chart, get_d27_chart, get_d30_chart, get_d40_chart, get_d45_chart, get_d60_chart)
 router = APIRouter()
 @router.post("/chart/generate")
 def generate_chart(request : ChartRequest):
@@ -74,7 +74,59 @@ def d2_test():
 def d3_test():
     planets = get_all_planets("2003-08-10", "14:30")
     return get_d3_chart(planets)
+@router.get("/chart/d4-test")
+def d4_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d4_chart(planets)
+@router.get("/chart/d7-test")
+def d7_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d7_chart(planets)
 @router.get("/chart/d9-test")
 def d9_test():
     planets = get_all_planets("2003-08-10", "14:30")
     return get_d9_chart(planets)
+@router.get("/chart/d10-test")
+def d10_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d10_chart(planets)
+@router.get("/chart/d12-test")
+def d12_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d12_chart(planets)
+@router.get("/chart/d16-test")
+def d16_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d16_chart(planets)
+@router.get("/chart/d20-test")
+def d20_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d20_chart(planets)
+@router.get("/chart/d24-test")
+def d24_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d24_chart(planets)
+@router.get("/chart/d27-test")
+def d27_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d27_chart(planets)
+@router.get("/chart/d30-test")
+def d30_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d30_chart(planets)
+@router.get("/chart/d40-test")
+def d40_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d40_chart(planets)
+@router.get("/chart/d45-test")
+def d45_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d45_chart(planets)
+@router.get("/chart/d60-test")
+def d60_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return get_d60_chart(planets)
+@router.get("/chart/rahu-test")
+def rahu_test():
+    planets = get_all_planets("2003-08-10", "14:30")
+    return {"Rahu": planets["Rahu"], "Ketu": planets["Ketu"]}
