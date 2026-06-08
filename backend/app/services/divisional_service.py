@@ -256,7 +256,11 @@ def get_d45_chart(planets):
         result[planet_name] = {"d45_sign" : get_d45_sign(longitude)}
     return result
 def get_d60_sign(longitude):
-    pass
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    shastiamsha_number = int(degree_in_sign // 0.5)
+    destination_index = (sign_index + shastiamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d60_chart(planets):
     result = {}
     for planet_name in planets:
