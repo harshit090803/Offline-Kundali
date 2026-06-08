@@ -263,4 +263,3 @@ def get_d60_chart(planets):
         longitude = planets[planet_name]["longitude"]
         result[planet_name] = {"d60_sign" : get_d60_sign(longitude)}
     return result
-print(get_d27_sign(74.53))
