@@ -190,7 +190,30 @@ def get_d27_chart(planets):
         result[planet_name] = {"d27_sign" : get_d27_sign(longitude)}
     return result
 def get_d30_sign(longitude):
-    pass
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    if sign_index % 2 == 0:
+        if degree_in_sign < 5:
+            return "Aries"
+        elif degree_in_sign < 10:
+            return "Aquarius"
+        elif degree_in_sign < 18:
+            return "Sagittarius"
+        elif degree_in_sign < 25:
+            return "Gemini"
+        else:
+            return "Libra"
+    else:
+        if degree_in_sign < 5:
+            return "Taurus"
+        elif degree_in_sign < 12:
+            return "Virgo"
+        elif degree_in_sign < 20:
+            return "Pisces"
+        elif degree_in_sign < 25:
+            return "Capricorn"
+        else:
+            return "Scorpio"
 def get_d30_chart(planets):
     result = {}
     for planet_name in planets:
@@ -198,7 +221,15 @@ def get_d30_chart(planets):
         result[planet_name] = {"d30_sign" : get_d30_sign(longitude)}
     return result
 def get_d40_sign(longitude):
-    pass
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    khavedamsha_number = int(degree_in_sign // (30/40))
+    if sign_index % 2 == 0:
+        start_index = 0
+    else:
+        start_index = 6
+    destination_index = (start_index + khavedamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d40_chart(planets):
     result = {}
     for planet_name in planets:
@@ -206,7 +237,18 @@ def get_d40_chart(planets):
         result[planet_name] = {"d40_sign" : get_d40_sign(longitude)}
     return result
 def get_d45_sign(longitude):
-    pass
+    sign_index = int(longitude // 30)
+    degree_in_sign = longitude % 30
+    sign = SIGNS[sign_index]
+    akshavedamsha_number = int(degree_in_sign // (30 / 45))
+    if sign in MOVABLE_SIGNS:
+        start_index = 0
+    elif sign in FIXED_SIGNS:
+        start_index = 4
+    else:
+        start_index = 8
+    destination_index = (start_index + akshavedamsha_number) % 12
+    return SIGNS[destination_index]
 def get_d45_chart(planets):
     result = {}
     for planet_name in planets:
