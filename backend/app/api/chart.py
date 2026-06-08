@@ -10,7 +10,8 @@ from app.services.dasha_service import (get_dasha_balance, get_current_mahadasha
 from datetime import datetime
 from app.services.time_service import (local_to_utc)
 from app.services.aspect_service import get_aspects
-from app.services.divisional_service import (get_d2_chart, get_d3_chart, get_d4_chart, get_d7_chart, get_d9_chart, get_d10_chart, get_d12_chart, get_d16_chart, get_d20_chart, get_d24_chart, get_d27_chart, get_d30_chart, get_d40_chart, get_d45_chart, get_d60_chart)
+from app.services.divisional_service import (get_d2_chart, get_d3_chart, get_d4_chart, get_d7_chart, get_d9_chart, get_d10_chart, get_d12_chart, get_d16_chart, get_d20_chart, get_d24_chart, get_d27_chart, get_d30_chart, get_d40_chart, get_d45_chart, get_d60_chart, get_d27_sign)
+from app.services.constants import (SIGNS, FIRE_SIGNS, EARTH_SIGNS, AIR_SIGNS, WATER_SIGNS)
 router = APIRouter()
 @router.post("/chart/generate")
 def generate_chart(request : ChartRequest):
@@ -130,3 +131,10 @@ def d60_test():
 def rahu_test():
     planets = get_all_planets("2003-08-10", "14:30")
     return {"Rahu": planets["Rahu"], "Ketu": planets["Ketu"]}
+@router.get("/chart/test")
+@router.get("/chart/test")
+def test():
+    return get_d27_sign(74.53)
+@router.get("/chart/test2")
+def test2():
+    return {"AIR_SIGNS": AIR_SIGNS}

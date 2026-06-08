@@ -1,4 +1,5 @@
 from app.services.planet_service import get_zodiac_sign
+from app.services.constants import SIGNS, MOVABLE_SIGNS, FIXED_SIGNS, DUAL_SIGNS, ODD_SIGNS, FIRE_SIGNS, EARTH_SIGNS, AIR_SIGNS, WATER_SIGNS
 def get_d2_sign(longitude):
     sign_index = int(longitude // 30)
     degree_in_sign = longitude % 30
@@ -19,46 +20,6 @@ def get_d2_chart(planets):
         longitude = data["longitude"]
         result[planet_name] = {"d2_sign" : get_d2_sign(longitude)}
     return result
-SIGNS = [
-    "Aries",
-    "Taurus",
-    "Gemini",
-    "Cancer",
-    "Leo",
-    "Virgo",
-    "Libra",
-    "Scorpio",
-    "Sagittarius",
-    "Capricorn",
-    "Aquarius",
-    "Pisces"
-]
-MOVABLE_SIGNS = [
-    "Aries",
-    "Cancer",
-    "Libra",
-    "Capricorn"
-]
-FIXED_SIGNS = [
-    "Taurus",
-    "Leo",
-    "Scorpio",
-    "Aquarius"
-]
-DUAL_SIGNS = [
-    "Gemini",
-    "Virgo",
-    "Sagittarius",
-    "Pisces"
-]
-ODD_SIGNS = [
-    "Aries",
-    "Gemini",
-    "Leo",
-    "Libra",
-    "Sagittarius",
-    "Aquarius"
-]
 def get_d3_sign(longitude):
     sign_index = int(longitude // 30)
     degree_in_sign = longitude % 30
@@ -207,7 +168,21 @@ def get_d24_chart(planets):
         result[planet_name] = {"d24_sign" : get_d24_sign(longitude)}
     return result
 def get_d27_sign(longitude):
-    pass
+    sign_index = int(longitude // 30)
+    sign = SIGNS[sign_index]
+    degree_in_sign = longitude % 30
+    bhamsha_number = int(degree_in_sign // (30 / 27))
+    if sign in FIRE_SIGNS:
+        start_index = 0
+    elif sign in EARTH_SIGNS:
+        start_index = 3
+    elif sign in AIR_SIGNS:
+        start_index = 6
+    else:
+        start_index = 9
+    destination_index = (start_index + bhamsha_number) % 12
+    print({"sign" : sign, "start_index" : start_index, "destination_index" : destination_index, "result" : SIGNS[destination_index]})
+    return SIGNS[destination_index]
 def get_d27_chart(planets):
     result = {}
     for planet_name in planets:
@@ -246,3 +221,4 @@ def get_d60_chart(planets):
         longitude = planets[planet_name]["longitude"]
         result[planet_name] = {"d60_sign" : get_d60_sign(longitude)}
     return result
+print(get_d27_sign(74.53))
